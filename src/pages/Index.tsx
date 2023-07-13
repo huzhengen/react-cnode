@@ -10,17 +10,22 @@ const Header = styled.header`
  .wrapper{
   width: 1200px;
   margin: 0 auto;
+  padding: 2px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   .left {
     display: flex;
     align-items: center;
+    h1{
+      margin-right: 20px;
+    }
   }
   nav{
     ul {
       display: flex;
       li{
+        margin-left: 20px;
         a{
           color: #fff;;
         }
@@ -30,22 +35,16 @@ const Header = styled.header`
  }
 `;
 
-const Wrapper = styled.div`
-  display: flex;
-`;
-
-
 function Index() {
   return (
     <>
       <Header>
-        <Wrapper />
         <div className="wrapper">
           <div className="left">
             <h1>
               <img width="100" src="http://static2.cnodejs.org/public/images/cnodejs_light.svg" />
             </h1>
-            <Search placeholder="input search text" onSearch={onSearch} style={{ width: 200 }} />
+            <Search placeholder="搜索" onSearch={onSearch} style={{ width: 200 }} />
           </div>
           <nav>
             <ul>
