@@ -1,10 +1,10 @@
 import { Input } from 'antd';
 import { useEffect, useState } from 'react';
 import { Tag } from 'antd';
-import { Link } from 'react-router-dom';
 import { Header } from '../styles/Header'
 import { Main } from '../styles/Main'
 import axios from 'axios'
+import { IndexTopicLi } from '../components/IndexTopicLi';
 
 const { Search } = Input;
 const { CheckableTag } = Tag;
@@ -13,26 +13,6 @@ const tagsData = ['全部', '精华', '分享', '问答', '招聘', '客户端�
 
 const onSearch = (value: string) => console.log(value);
 
-type Author = {
-  "loginname": string,
-  "avatar_url": string,
-}
-
-type Topic = {
-  "id": string,
-  "author_id": string,
-  "tab": string,
-  "content": string,
-  "title": string,
-  "last_reply_at": string,
-  "good": boolean,
-  "top": boolean,
-  "reply_count": number,
-  "visit_count": number,
-  "create_at": string,
-  "author": Author,
-}
-
 function Index() {
   const [selectedTag, setSelectedTag] = useState<string>('全部');
   const [topics, setTopics] = useState<Topic[]>([])
@@ -40,28 +20,6 @@ function Index() {
   const handleChange = (tag: string) => {
     setSelectedTag(tag)
   };
-
-  const changeTab = (value: string) => {
-    let tab = ''
-    switch (value) {
-      case 'ask':
-        tab = '问答'
-        break;
-      case 'share':
-        tab = '分享'
-        break;
-      case 'job':
-        tab = '工作'
-        break;
-      case 'good':
-        tab = '精华'
-        break;
-      default:
-        tab = '其他'
-        break;
-    }
-    return tab
-  }
 
   useEffect(() => {
     axios.get<{ data: Topic[], success: boolean }>('https://cnodejs.org/api/v1/topics')
@@ -113,22 +71,7 @@ function Index() {
           <div className="content">
             <ul>
               {topics.map((topic) => (
-                <li key={topic.id}>
-                  <div className="info">
-                    <img src={topic.author.avatar_url} alt="" />
-                    <span className='reply'>
-                      <i>{topic.reply_count}</i>/<em>{topic.visit_count}</em>
-                    </span>
-                    <CheckableTag checked={topic.top}>
-                      {topic.top ? '置顶' : changeTab(topic.tab)}
-                    </CheckableTag>
-                    <h3><Link to={`https://cnodejs.org/topic/${topic.id}`}>{topic.title}</Link></h3>
-                  </div>
-                  <div className="time">
-                    {/* <img src="https://avatars.githubusercontent.com/u/958063?v=4&s=120" alt="" /> */}
-                    <time>{topic.last_reply_at}</time>
-                  </div>
-                </li>
+                <IndexTopicLi key={topic.id} topic={topic} />
               ))}
             </ul>
           </div>
