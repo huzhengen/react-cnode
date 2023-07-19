@@ -9,7 +9,37 @@ import { IndexTopicLi } from '../components/IndexTopicLi';
 const { Search } = Input;
 const { CheckableTag } = Tag;
 
-const tagsData = ['全部', '精华', '分享', '问答', '招聘', '客户端测试'];
+const tagsData = [
+  {
+    name: '全部',
+    tab: 'all',
+  },
+  {
+    name: '精华',
+    tab: 'good',
+  },
+  {
+    name: '分享',
+    tab: 'share',
+  },
+  {
+    name: '问答',
+    tab: 'ask',
+  },
+  {
+    name: '招聘',
+    tab: 'job',
+  },
+  {
+    name: '客户端测试',
+    tab: 'dev'
+  }
+];
+
+type Tag = {
+  tab: string,
+  name: string,
+}
 
 const onSearch = (value: string) => console.log(value);
 
@@ -17,21 +47,29 @@ function Index() {
   const [selectedTag, setSelectedTag] = useState<string>('全部');
   const [topics, setTopics] = useState<Topic[]>([])
 
-  const handleChange = (tag: string) => {
-    setSelectedTag(tag)
+  const handleChange = (tag: Tag) => {
+    setSelectedTag(tag.name)
+    getData(tag.tab)
   };
 
   useEffect(() => {
-    axios.get<{ data: Topic[], success: boolean }>('https://cnodejs.org/api/v1/topics')
+    getData('all')
+  }, [])
+
+  const getData = (tab: string) => {
+    axios.get<{ data: Topic[], success: boolean }>(`https://cnodejs.org/api/v1/topics?tab=${tab}`)
       .then((res) => {
         if (res.data.success) {
+          console.log(1);
+
           setTopics(res.data.data)
+          console.log(2);
         }
       })
       .catch((err) => {
         console.log(err);
       })
-  }, [])
+  }
 
   return (
     <>
@@ -60,11 +98,11 @@ function Index() {
           <nav>
             {tagsData.map((tag) => (
               <CheckableTag
-                key={tag}
-                checked={selectedTag === tag}
+                key={tag.tab}
+                checked={selectedTag === tag.name}
                 onChange={() => handleChange(tag)}
               >
-                {tag}
+                {tag.name}
               </CheckableTag>
             ))}
           </nav>
