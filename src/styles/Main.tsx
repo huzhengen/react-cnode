@@ -106,6 +106,5 @@ gap: 0 20px;
 }
 .right{
   width: 300px;
-  border:1px solid green;
 }
 `

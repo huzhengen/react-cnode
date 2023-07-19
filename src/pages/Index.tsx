@@ -5,6 +5,7 @@ import { Header } from '../styles/Header'
 import { Main } from '../styles/Main'
 import axios from 'axios'
 import { IndexTopicLi } from '../components/IndexTopicLi';
+import { IndexRight } from '../components/IndexRight';
 
 const { Search } = Input;
 const { CheckableTag } = Tag;
@@ -60,10 +61,7 @@ function Index() {
     axios.get<{ data: Topic[], success: boolean }>(`https://cnodejs.org/api/v1/topics?tab=${tab}`)
       .then((res) => {
         if (res.data.success) {
-          console.log(1);
-
           setTopics(res.data.data)
-          console.log(2);
         }
       })
       .catch((err) => {
@@ -114,7 +112,7 @@ function Index() {
             </ul>
           </div>
         </div>
-        <div className="right"></div>
+        <IndexRight topics={topics} />
       </Main>
     </>
   )
