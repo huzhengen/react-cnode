@@ -6,8 +6,8 @@ import { Main } from '../styles/Main'
 import axios from 'axios'
 import { IndexTopicLi } from '../components/IndexTopicLi';
 import { IndexRight } from '../components/IndexRight';
-import { connect } from 'react-redux'
 import { changeTab } from '../utils/changeTab'
+import { useSelector, useDispatch } from 'react-redux'
 
 const { Search } = Input;
 const { CheckableTag } = Tag;
@@ -44,24 +44,17 @@ type Tag = {
   name: string,
 }
 
-type DispatchParamObject = {
-  type: string,
-  payload: string,
-}
-
-type Props = {
-  tag: { value: string },
-  dispatch: ({ type, payload }: DispatchParamObject) => void
-}
-
 const onSearch = (value: string) => console.log(value);
 
-function Index(props?: Props) {
+function Index() {
+  const selectedTag = useSelector((state: SelectedTagState) => state)
+  const dispatch = useDispatch()
+
   const [topics, setTopics] = useState<Topic[]>([])
 
   const handleChange = (tag: Tag) => {
     const payload = changeTab(tag.tab)
-    props?.dispatch({ type: 'change', payload, })
+    dispatch({ type: 'change', payload, })
     getData(tag.tab)
   };
 
@@ -109,7 +102,7 @@ function Index(props?: Props) {
             {tagsData.map((tag) => (
               <CheckableTag
                 key={tag.tab}
-                checked={props?.tag.value === tag.name}
+                checked={selectedTag.tag.value === tag.name}
                 onChange={() => handleChange(tag)}
               >
                 {tag.name}
@@ -130,4 +123,4 @@ function Index(props?: Props) {
   )
 }
 
-export default connect(state => state)(Index)
+export default Index

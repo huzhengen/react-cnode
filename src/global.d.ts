@@ -1,4 +1,3 @@
-
 type Author = {
   "loginname": string,
   "avatar_url": string,
@@ -17,4 +16,12 @@ type Topic = {
   "visit_count": number,
   "create_at": string,
   "author": Author,
+}
+
+type SelectedTag = {
+  value: string
+}
+
+type SelectedTagState = {
+  tag: SelectedTag
 }
