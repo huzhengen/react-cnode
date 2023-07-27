@@ -1,32 +1,11 @@
 import { Tag } from 'antd';
 import { Link } from 'react-router-dom';
+import { changeTab } from '../utils/changeTab'
 
 const { CheckableTag } = Tag;
 
 export const IndexTopicLi = (props: { topic: Topic }) => {
   const { topic } = props
-
-  const changeTab = (value: string) => {
-    let tab = ''
-    switch (value) {
-      case 'ask':
-        tab = '问答'
-        break;
-      case 'share':
-        tab = '分享'
-        break;
-      case 'job':
-        tab = '工作'
-        break;
-      case 'good':
-        tab = '精华'
-        break;
-      default:
-        tab = '其他'
-        break;
-    }
-    return tab
-  }
 
   return (
     <li key={topic.id}>

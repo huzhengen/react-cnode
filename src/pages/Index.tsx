@@ -6,6 +6,8 @@ import { Main } from '../styles/Main'
 import axios from 'axios'
 import { IndexTopicLi } from '../components/IndexTopicLi';
 import { IndexRight } from '../components/IndexRight';
+import { connect } from 'react-redux'
+import { changeTab } from '../utils/changeTab'
 
 const { Search } = Input;
 const { CheckableTag } = Tag;
@@ -42,14 +44,24 @@ type Tag = {
   name: string,
 }
 
+type DispatchParamObject = {
+  type: string,
+  payload: string,
+}
+
+type Props = {
+  tag: { value: string },
+  dispatch: ({ type, payload }: DispatchParamObject) => void
+}
+
 const onSearch = (value: string) => console.log(value);
 
-function Index() {
-  const [selectedTag, setSelectedTag] = useState<string>('全部');
+function Index(props?: Props) {
   const [topics, setTopics] = useState<Topic[]>([])
 
   const handleChange = (tag: Tag) => {
-    setSelectedTag(tag.name)
+    const payload = changeTab(tag.tab)
+    props?.dispatch({ type: 'change', payload, })
     getData(tag.tab)
   };
 
@@ -97,7 +109,7 @@ function Index() {
             {tagsData.map((tag) => (
               <CheckableTag
                 key={tag.tab}
-                checked={selectedTag === tag.name}
+                checked={props?.tag.value === tag.name}
                 onChange={() => handleChange(tag)}
               >
                 {tag.name}
@@ -118,4 +130,4 @@ function Index() {
   )
 }
 
-export default Index
+export default connect(state => state)(Index)
