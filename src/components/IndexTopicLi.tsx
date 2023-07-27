@@ -36,7 +36,11 @@ export const IndexTopicLi = (props: { topic: Topic }) => {
           <i>{topic.reply_count}</i>/<em>{topic.visit_count}</em>
         </span>
         <CheckableTag checked={topic.top}>
-          {topic.top ? '置顶' : changeTab(topic.tab)}
+          {topic.top
+            ? '置顶'
+            : topic.good
+              ? '精华'
+              : changeTab(topic.tab)}
         </CheckableTag>
         <h3><Link to={`https://cnodejs.org/topic/${topic.id}`}>{topic.title}</Link></h3>
       </div>
